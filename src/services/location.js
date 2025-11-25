@@ -13,9 +13,20 @@ export function getUserLocation() {
             reject(new Error('Geolocation not supported'));
             return;
         }
+
+        // Request high accuracy location
         navigator.geolocation.getCurrentPosition(
-            (position) => resolve({ lat: position.coords.latitude, lng: position.coords.longitude }),
-            (error) => reject(error)
+            (position) => resolve({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                accuracy: position.coords.accuracy
+            }),
+            (error) => reject(error),
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
         );
     });
 }
@@ -49,7 +60,6 @@ export async function getNearbyStores(lat, lng, keyword = null) {
         else if (k.includes('elek') || k.includes('tech')) queryFilter = '["shop"="electronics"]';
         else if (k.includes('galer') || k.includes('mall')) queryFilter = '["shop"="mall"]';
         else if (k.includes('aptek') || k.includes('pharm')) queryFilter = '["amenity"="pharmacy"]';
-        // Add more heuristics as needed, default to supermarket if generic
     }
 
     // Overpass API query
