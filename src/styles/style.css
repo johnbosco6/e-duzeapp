@@ -678,3 +678,58 @@ body {
 .map-nav-btn:active {
   transform: scale(0.95);
 }
+
+/* Custom Letter Markers */
+.custom-letter-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.letter-marker {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+  position: relative;
+}
+
+.letter-marker::before {
+  content: attr(data-letter);
+  transform: rotate(45deg);
+}
+
+/* User Location Marker */
+.custom-user-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.user-location-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4285F4;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  animation: pulse-location 2s ease-in-out infinite;
+}
+
+@keyframes pulse-location {
+
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(66, 133, 244, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 10px rgba(66, 133, 244, 0);
+  }
+}
