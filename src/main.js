@@ -54,43 +54,43 @@ function render() {
         <div class="category-section">
             <div class="category-title">🛒 Retail & Supermarkets</div>
             <div class="store-grid">
-                <div class="store-logo" style="background: #e30613;">Biedronka</div>
-                <div class="store-logo" style="background: #0050aa;">Lidl</div>
-                <div class="store-logo" style="background: #006837;">Żabka</div>
-                <div class="store-logo" style="background: #e01e37;">Auchan</div>
-                <div class="store-logo" style="background: #0071ce;">Carrefour</div>
-                <div class="store-logo" style="background: #ff6600;">Allegro</div>
+                <a href="https://www.biedronka.pl" target="_blank" class="store-logo" style="background: #e30613;">Biedronka</a>
+                <a href="https://www.lidl.pl" target="_blank" class="store-logo" style="background: #0050aa;">Lidl</a>
+                <a href="https://www.zabka.pl" target="_blank" class="store-logo" style="background: #006837;">Żabka</a>
+                <a href="https://www.auchan.pl" target="_blank" class="store-logo" style="background: #e01e37;">Auchan</a>
+                <a href="https://www.carrefour.pl" target="_blank" class="store-logo" style="background: #0071ce;">Carrefour</a>
+                <a href="https://www.allegro.pl" target="_blank" class="store-logo" style="background: #ff6600;">Allegro</a>
             </div>
         </div>
 
         <div class="category-section">
             <div class="category-title">👕 Fashion & Clothing</div>
             <div class="store-grid">
-                <div class="store-logo" style="background: #000;">Zara</div>
-                <div class="store-logo" style="background: #e4002b;">H&M</div>
-                <div class="store-logo" style="background: #1e1e1e;">Reserved</div>
-                <div class="store-logo" style="background: #00539f;">C&A</div>
-                <div class="store-logo" style="background: #8b4513;">Pull&Bear</div>
+                <a href="https://www.zara.com/pl" target="_blank" class="store-logo" style="background: #000;">Zara</a>
+                <a href="https://www2.hm.com/pl_pl" target="_blank" class="store-logo" style="background: #e4002b;">H&M</a>
+                <a href="https://www.reserved.com/pl" target="_blank" class="store-logo" style="background: #1e1e1e;">Reserved</a>
+                <a href="https://www.c-and-a.com/pl" target="_blank" class="store-logo" style="background: #00539f;">C&A</a>
+                <a href="https://www.pullandbear.com/pl" target="_blank" class="store-logo" style="background: #8b4513;">Pull&Bear</a>
             </div>
         </div>
 
         <div class="category-section">
             <div class="category-title">📱 Electronics & Tech</div>
             <div class="store-grid">
-                <div class="store-logo" style="background: #e30613;">MediaMarkt</div>
-                <div class="store-logo" style="background: #0066cc;">RTV Euro AGD</div>
-                <div class="store-logo" style="background: #ff6600;">x-kom</div>
-                <div class="store-logo" style="background: #000;">Media Expert</div>
-                <div class="store-logo" style="background: #0071ce;">Samsung</div>
+                <a href="https://www.mediamarkt.pl" target="_blank" class="store-logo" style="background: #e30613;">MediaMarkt</a>
+                <a href="https://www.euro.com.pl" target="_blank" class="store-logo" style="background: #0066cc;">RTV Euro AGD</a>
+                <a href="https://www.x-kom.pl" target="_blank" class="store-logo" style="background: #ff6600;">x-kom</a>
+                <a href="https://www.mediaexpert.pl" target="_blank" class="store-logo" style="background: #000;">Media Expert</a>
+                <a href="https://www.samsung.com/pl" target="_blank" class="store-logo" style="background: #0071ce;">Samsung</a>
             </div>
         </div>
 
         <div class="category-section">
             <div class="category-title">🏬 Malls & Shopping Centers</div>
             <div class="store-grid">
-                <div class="store-logo" style="background: #d4af37;">Galeria Krakowska</div>
-                <div class="store-logo" style="background: #c41e3a;">Arkadia</div>
-                <div class="store-logo" style="background: #003366;">Złote Tarasy</div>
+                <a href="https://www.galeriakrakowska.pl" target="_blank" class="store-logo" style="background: #d4af37;">Galeria Krakowska</a>
+                <a href="https://arkadia.com.pl" target="_blank" class="store-logo" style="background: #c41e3a;">Arkadia</a>
+                <a href="https://www.zlotetarasy.pl" target="_blank" class="store-logo" style="background: #003366;">Złote Tarasy</a>
             </div>
         </div>
 
