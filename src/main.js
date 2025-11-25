@@ -7,7 +7,8 @@ import StoreMap from './components/StoreMap.js';
 import { getProduct } from './services/api.js';
 import { getUserLocation, getNearbyStores, geocodeCity } from './services/location.js';
 import { addToHistory, getHistory, clearHistory, getUserProfile, saveUserProfile } from './services/storage.js';
-import { getAllDeals, getDealsByCity, getDealsByStore } from './services/deals.js';
+import { getAllDeals, getDealsByCity, getDealsByStore, getDealsByLocation } from './services/deals.js';
+import { POLISH_CITIES, getAllVoivodeships, getCitiesByVoivodeship } from './services/cities.js';
 
 // Register Service Worker
 const updateSW = registerSW({
@@ -118,8 +119,9 @@ function render() {
     `;
   } else if (currentState === 'deals') {
     const allDeals = getAllDeals();
-    const cities = [...new Set(allDeals.map(d => d.city))];
-    const stores = [...new Set(allDeals.map(d => d.store))];
+    const voivodeships = getAllVoivodeships();
+    const cities = [...new Set(allDeals.map(d => d.city))].sort();
+    const stores = [...new Set(allDeals.map(d => d.store))].sort();
 
     content = `
       <div id="deals-view" class="fade-in">
@@ -127,14 +129,25 @@ function render() {
         
         <div class="product-card" style="text-align: left; margin-bottom: 1.5rem;">
           <div class="form-group">
-            <label>Filtruj po mieście</label>
+            <label>📍 Województwo</label>
+            <select id="voivodeship-filter" class="form-input">
+              <option value="">Wszystkie województwa</option>
+              ${voivodeships.map(v => `<option value="${v}">${v}</option>`).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>🏛️ Miasto</label>
             <select id="city-filter" class="form-input">
               <option value="">Wszystkie miasta</option>
               ${cities.map(city => `<option value="${city}">${city}</option>`).join('')}
             </select>
           </div>
           <div class="form-group">
-            <label>Filtruj po sklepie</label>
+            <label>🛣️ Ulica (opcjonalnie)</label>
+            <input type="text" id="street-filter" class="form-input" placeholder="np. Krakowskie Przedmieście">
+          </div>
+          <div class="form-group">
+            <label>🏪 Sklep</label>
             <select id="store-filter" class="form-input">
               <option value="">Wszystkie sklepy</option>
               ${stores.map(store => `<option value="${store}">${store}</option>`).join('')}
@@ -152,7 +165,10 @@ function render() {
               <h3 class="deal-product">${deal.product}</h3>
               <div class="deal-details">
                 <span class="deal-price">💰 ${deal.price}</span>
-                <span class="deal-city">📍 ${deal.city}</span>
+              </div>
+              <div class="deal-location">
+                <div>🏛️ ${deal.city}</div>
+                <div class="deal-street">🛣️ ${deal.street}</div>
               </div>
               <div class="deal-validity">Ważne do: ${deal.validUntil}</div>
             </div>
@@ -267,7 +283,9 @@ function render() {
     });
   } else if (currentState === 'deals') {
     // Add filter event listeners
+    document.getElementById('voivodeship-filter').addEventListener('change', filterDeals);
     document.getElementById('city-filter').addEventListener('change', filterDeals);
+    document.getElementById('street-filter').addEventListener('input', filterDeals);
     document.getElementById('store-filter').addEventListener('change', filterDeals);
   } else if (currentState === 'profile') {
     document.getElementById('save-profile').addEventListener('click', async () => {
@@ -389,34 +407,64 @@ async function handleMapSearch() {
 }
 
 function filterDeals() {
+  const voivodeshipFilter = document.getElementById('voivodeship-filter').value;
   const cityFilter = document.getElementById('city-filter').value;
+  const streetFilter = document.getElementById('street-filter').value.toLowerCase();
   const storeFilter = document.getElementById('store-filter').value;
 
   let deals = getAllDeals();
 
-  if (cityFilter) {
-    deals = getDealsByCity(cityFilter);
+  // Filter by voivodeship (updates city dropdown)
+  if (voivodeshipFilter) {
+    const citiesInVoivodeship = getCitiesByVoivodeship(voivodeshipFilter).map(c => c.name);
+    deals = deals.filter(d => citiesInVoivodeship.includes(d.city));
+
+    // Update city dropdown to show only cities in selected voivodeship
+    const citySelect = document.getElementById('city-filter');
+    const currentCity = citySelect.value;
+    citySelect.innerHTML = '<option value="">Wszystkie miasta</option>' +
+      citiesInVoivodeship.sort().map(city =>
+        `<option value="${city}" ${city === currentCity ? 'selected' : ''}>${city}</option>`
+      ).join('');
   }
 
+  // Filter by city
+  if (cityFilter) {
+    deals = deals.filter(d => d.city === cityFilter);
+  }
+
+  // Filter by street
+  if (streetFilter) {
+    deals = deals.filter(d => d.street.toLowerCase().includes(streetFilter));
+  }
+
+  // Filter by store
   if (storeFilter) {
     deals = deals.filter(d => d.store === storeFilter);
   }
 
   const container = document.getElementById('deals-container');
-  container.innerHTML = deals.map(deal => `
-    <div class="deal-card">
-      <div class="deal-header">
-        <span class="deal-store">${deal.store}</span>
-        <span class="deal-discount">${deal.discount}</span>
+  if (deals.length === 0) {
+    container.innerHTML = '<div class="product-card"><p>Brak ofert dla wybranych filtrów</p></div>';
+  } else {
+    container.innerHTML = deals.map(deal => `
+      <div class="deal-card">
+        <div class="deal-header">
+          <span class="deal-store">${deal.store}</span>
+          <span class="deal-discount">${deal.discount}</span>
+        </div>
+        <h3 class="deal-product">${deal.product}</h3>
+        <div class="deal-details">
+          <span class="deal-price">💰 ${deal.price}</span>
+        </div>
+        <div class="deal-location">
+          <div>🏛️ ${deal.city}</div>
+          <div class="deal-street">🛣️ ${deal.street}</div>
+        </div>
+        <div class="deal-validity">Ważne do: ${deal.validUntil}</div>
       </div>
-      <h3 class="deal-product">${deal.product}</h3>
-      <div class="deal-details">
-        <span class="deal-price">💰 ${deal.price}</span>
-        <span class="deal-city">📍 ${deal.city}</span>
-      </div>
-      <div class="deal-validity">Ważne do: ${deal.validUntil}</div>
-    </div>
-  `).join('');
+    `).join('');
+  }
 }
 
 window.addEventListener('hashchange', () => {
