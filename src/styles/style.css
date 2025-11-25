@@ -601,7 +601,7 @@ body {
   gap: 5px;
 }
 
-/* 3D Map Markers */
+/* 3D Map Markers - Static (No Animation) */
 .marker-3d {
   position: relative;
   display: flex;
@@ -612,7 +612,6 @@ body {
 .marker-pin {
   font-size: 2.5rem;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
-  animation: bounce-marker 2s ease-in-out infinite;
   z-index: 2;
 }
 
@@ -627,18 +626,6 @@ body {
   border-radius: 50%;
   margin-top: -10px;
   z-index: 1;
-}
-
-@keyframes bounce-marker {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 /* Map Popup Styles */
