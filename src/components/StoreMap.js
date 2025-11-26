@@ -11,20 +11,43 @@ function getStoreInitial(storeName, storeBrand) {
 function getStoreColor(storeName, storeBrand) {
     const name = (storeBrand || storeName || '').toLowerCase();
 
-    // Match store colors
-    if (name.includes('biedronka')) return '#e30613';
-    if (name.includes('lidl')) return '#0050aa';
-    if (name.includes('żabka') || name.includes('zabka')) return '#006837';
-    if (name.includes('auchan')) return '#e01e37';
-    if (name.includes('carrefour')) return '#0071ce';
-    if (name.includes('allegro')) return '#ff6600';
-    if (name.includes('zara')) return '#000';
-    if (name.includes('h&m')) return '#e4002b';
-    if (name.includes('reserved')) return '#1e1e1e';
-    if (name.includes('mediamarkt') || name.includes('media markt')) return '#e30613';
+    // Supermarkets
+    if (name.includes('pick n pay') || name.includes('pnp')) return '#003366'; // Blue
+    if (name.includes('checkers')) return '#008da5'; // Teal
+    if (name.includes('woolworths')) return '#000000'; // Black
+    if (name.includes('spar')) return '#00923f'; // Green
+    if (name.includes('shoprite')) return '#e30613'; // Red
+    if (name.includes('boxer')) return '#e30613'; // Red
+    if (name.includes('food lover')) return '#8dc63f'; // Light Green
+    if (name.includes('makro')) return '#003da5'; // Blue
+    if (name.includes('game')) return '#e30613'; // Pink/Red
+
+    // Pharmacies
+    if (name.includes('clicks')) return '#005eb8'; // Blue
+    if (name.includes('dis-chem') || name.includes('dischem')) return '#009640'; // Green
+
+    // Restaurants & Fast Food
+    if (name.includes('nandos')) return '#8B0000'; // Dark Red
+    if (name.includes('kfc')) return '#e4002b'; // Red
+    if (name.includes('mcdonald')) return '#ffc72c'; // Yellow
+    if (name.includes('burger king')) return '#003366'; // Blue
+    if (name.includes('steers')) return '#c41e3a'; // Red
+    if (name.includes('spur')) return '#8B4513'; // Brown
+    if (name.includes('wimpy')) return '#e30613'; // Red
+    if (name.includes('debonairs')) return '#ff6600'; // Orange
+    if (name.includes('ocean basket')) return '#0066cc'; // Blue
+    if (name.includes('mugg & bean') || name.includes('mugg')) return '#4a3c31'; // Coffee
+    if (name.includes('romans') || name.includes('roman\'s')) return '#ff6600'; // Orange
+
+    // Fashion
+    if (name.includes('edgars')) return '#e30613'; // Red
+    if (name.includes('mr price') || name.includes('mrp')) return '#e30613'; // Red
+    if (name.includes('truworths')) return '#1e1e1e'; // Dark Grey
+    if (name.includes('ackermans')) return '#00923f'; // Blue/Green
+    if (name.includes('pep')) return '#005eb8'; // Blue
 
     // Default color
-    return '#FF6B00';
+    return '#0066CC';
 }
 
 // Create custom div icon with letter

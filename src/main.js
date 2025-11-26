@@ -79,6 +79,8 @@ function render() {
                 <a href="https://www.spar.co.za" target="_blank" class="store-logo" style="background: #00923f;">Spar</a>
                 <a href="https://www.shoprite.co.za" target="_blank" class="store-logo" style="background: #e30613;">Shoprite</a>
                 <a href="https://www.makro.co.za" target="_blank" class="store-logo" style="background: #003da5;">Makro</a>
+                <a href="https://www.boxer.co.za" target="_blank" class="store-logo" style="background: #e30613;">Boxer</a>
+                <a href="https://foodloversmarket.co.za" target="_blank" class="store-logo" style="background: #8dc63f;">Food Lover's</a>
             </div>
         </div>
 
@@ -90,6 +92,14 @@ function render() {
                 <a href="https://www.truworths.co.za" target="_blank" class="store-logo" style="background: #1e1e1e;">Truworths</a>
                 <a href="https://www.mrprice.co.za" target="_blank" class="store-logo" style="background: #e4002b;">Mr Price</a>
                 <a href="https://www.ackermans.co.za" target="_blank" class="store-logo" style="background: #ff6600;">Ackermans</a>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-title">💊 Health & Beauty</div>
+            <div class="store-grid">
+                <a href="https://clicks.co.za" target="_blank" class="store-logo" style="background: #005eb8;">Clicks</a>
+                <a href="https://www.dischem.co.za" target="_blank" class="store-logo" style="background: #009640;">Dis-Chem</a>
             </div>
         </div>
 
@@ -113,6 +123,12 @@ function render() {
                 <a href="https://www.steers.co.za" target="_blank" class="store-logo" style="background: #c41e3a;">Steers</a>
                 <a href="https://www.spur.co.za" target="_blank" class="store-logo" style="background: #8B4513;">Spur</a>
                 <a href="https://www.debonairspizza.co.za" target="_blank" class="store-logo" style="background: #ff6600;">Debonairs</a>
+                <a href="https://wimpy.co.za" target="_blank" class="store-logo" style="background: #e30613;">Wimpy</a>
+                <a href="https://www.romanspizza.co.za" target="_blank" class="store-logo" style="background: #ff6600;">Roman's Pizza</a>
+                <a href="https://muggandbean.co.za" target="_blank" class="store-logo" style="background: #4a3c31;">Mugg & Bean</a>
+                <a href="https://fishaways.co.za" target="_blank" class="store-logo" style="background: #0066cc;">Fishaways</a>
+                <a href="https://www.mcdonalds.co.za" target="_blank" class="store-logo" style="background: #ffc72c;">McDonalds</a>
+                <a href="https://www.burgerking.co.za" target="_blank" class="store-logo" style="background: #003366;">Burger King</a>
             </div>
         </div>
 

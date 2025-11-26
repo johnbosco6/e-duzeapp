@@ -51,24 +51,36 @@ export async function geocodeCity(cityName) {
 }
 
 export async function getNearbyStores(lat, lng, keyword = null) {
-    let queryFilter = '["shop"~"supermarket|convenience"]';
+    // Default query parts covering major categories
+    let queryParts = [
+        '["shop"~"supermarket|convenience|department_store|general|mall"]',
+        '["amenity"~"restaurant|fast_food|cafe|pharmacy"]',
+        '["shop"~"clothes|electronics|shoes"]'
+    ];
 
     if (keyword) {
         const k = keyword.toLowerCase();
-        if (k.includes('but') || k.includes('shoe')) queryFilter = '["shop"="shoes"]';
-        else if (k.includes('ubra') || k.includes('cloth')) queryFilter = '["shop"="clothes"]';
-        else if (k.includes('elek') || k.includes('tech')) queryFilter = '["shop"="electronics"]';
-        else if (k.includes('galer') || k.includes('mall')) queryFilter = '["shop"="mall"]';
-        else if (k.includes('aptek') || k.includes('pharm')) queryFilter = '["amenity"="pharmacy"]';
+        if (k.includes('shoe')) queryParts = ['["shop"="shoes"]'];
+        else if (k.includes('cloth') || k.includes('fashion')) queryParts = ['["shop"~"clothes|fashion"]'];
+        else if (k.includes('tech') || k.includes('electr')) queryParts = ['["shop"~"electronics|mobile_phone|computer"]'];
+        else if (k.includes('mall') || k.includes('center')) queryParts = ['["shop"="mall"]'];
+        else if (k.includes('pharm') || k.includes('chem')) queryParts = ['["amenity"="pharmacy"]', '["shop"="chemist"]'];
+        else if (k.includes('food') || k.includes('rest') || k.includes('eat')) queryParts = ['["amenity"~"restaurant|fast_food|cafe"]'];
+        else if (k.includes('grocer') || k.includes('super')) queryParts = ['["shop"~"supermarket|convenience"]'];
     }
+
+    // Construct query with multiple filters
+    const queryItems = queryParts.map(filter => `
+      node${filter}(around:5000, ${lat}, ${lng});
+      way${filter}(around:5000, ${lat}, ${lng});
+      relation${filter}(around:5000, ${lat}, ${lng});
+    `).join('\n');
 
     // Overpass API query
     const query = `
     [out:json][timeout:25];
     (
-      node${queryFilter}(around:2000, ${lat}, ${lng});
-      way${queryFilter}(around:2000, ${lat}, ${lng});
-      relation${queryFilter}(around:2000, ${lat}, ${lng});
+      ${queryItems}
     );
     out center;
   `;
