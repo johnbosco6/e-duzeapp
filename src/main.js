@@ -8,12 +8,12 @@ import { getProduct } from './services/api.js';
 import { getUserLocation, getNearbyStores, geocodeCity } from './services/location.js';
 import { addToHistory, getHistory, clearHistory, getUserProfile, saveUserProfile } from './services/storage.js';
 import { getAllDeals, getDealsByCity, getDealsByStore, getDealsByLocation } from './services/deals.js';
-import { POLISH_CITIES, getAllVoivodeships, getCitiesByVoivodeship } from './services/cities.js';
+import { SOUTH_AFRICAN_CITIES, getAllProvinces, getCitiesByProvince } from './services/cities.js';
 
 // Register Service Worker
 const updateSW = registerSW({
   onNeedRefresh() {
-    if (confirm('Nowa wersja dostępna. Odświeżyć?')) {
+    if (confirm('New version available. Refresh?')) {
       updateSW(true);
     }
   },
@@ -22,9 +22,27 @@ const updateSW = registerSW({
 const app = document.querySelector('#app');
 
 // State
-let currentState = 'home';
+let currentState = 'splash';
 let currentProduct = null;
 let mapInstance = null;
+
+// Show splash screen on load
+function showSplashScreen() {
+  app.innerHTML = `
+    <div class="splash-screen">
+      <div class="splash-content">
+        <img src="/logo.png" alt="E-Duze" class="splash-logo">
+        <div class="splash-loader"></div>
+      </div>
+    </div>
+  `;
+
+  // Transition to home after 2.5 seconds
+  setTimeout(() => {
+    currentState = 'home';
+    render();
+  }, 2500);
+}
 
 function render() {
   let content = '';
@@ -36,120 +54,132 @@ function render() {
       ? history.map(h => `
           <div class="history-item" onclick="window.location.hash = '#product:${h.barcode}'">
             <div class="history-info">
-                <span class="history-name">${h.name || 'Nieznany produkt'}</span>
+                <span class="history-name">${h.name || 'Unknown product'}</span>
                 <span class="history-date">${new Date(h.date).toLocaleDateString()}</span>
             </div>
             <span>➡️</span>
           </div>
         `).join('')
-      : '<p style="color: var(--text-light); text-align: center;">Brak historii skanowania.</p>';
+      : '<p style="color: var(--text-light); text-align: center;">No scan history.</p>';
 
     content = `
       <div id="home-view" class="fade-in">
         <div class="hero">
-            <h2>Cześć, ${profile.name || 'Gościu'}! 👋</h2>
-            <p>Znajdź najlepsze produkty i sklepy w Twojej okolicy.</p>
-            <button class="scan-btn-large" data-target="scan">📷 Zeskanuj teraz</button>
+            <h2>Hello, ${profile.name || 'Guest'}! 👋</h2>
+            <p>Find the best products and stores in your area.</p>
+            <button class="scan-btn-large" data-target="scan">📷 Scan Now</button>
         </div>
 
         <div class="category-section">
             <div class="category-title">🛒 Retail & Supermarkets</div>
             <div class="store-grid">
-                <a href="https://www.biedronka.pl" target="_blank" class="store-logo" style="background: #e30613;">Biedronka</a>
-                <a href="https://www.lidl.pl" target="_blank" class="store-logo" style="background: #0050aa;">Lidl</a>
-                <a href="https://www.zabka.pl" target="_blank" class="store-logo" style="background: #006837;">Żabka</a>
-                <a href="https://www.auchan.pl" target="_blank" class="store-logo" style="background: #e01e37;">Auchan</a>
-                <a href="https://www.carrefour.pl" target="_blank" class="store-logo" style="background: #0071ce;">Carrefour</a>
-                <a href="https://www.allegro.pl" target="_blank" class="store-logo" style="background: #ff6600;">Allegro</a>
+                <a href="https://www.pnp.co.za" target="_blank" class="store-logo" style="background: #00923f;">Pick n Pay</a>
+                <a href="https://www.checkers.co.za" target="_blank" class="store-logo" style="background: #0066cc;">Checkers</a>
+                <a href="https://www.woolworths.co.za" target="_blank" class="store-logo" style="background: #006633;">Woolworths</a>
+                <a href="https://www.spar.co.za" target="_blank" class="store-logo" style="background: #00923f;">Spar</a>
+                <a href="https://www.shoprite.co.za" target="_blank" class="store-logo" style="background: #e30613;">Shoprite</a>
+                <a href="https://www.makro.co.za" target="_blank" class="store-logo" style="background: #003da5;">Makro</a>
             </div>
         </div>
 
         <div class="category-section">
             <div class="category-title">👕 Fashion & Clothing</div>
             <div class="store-grid">
-                <a href="https://www.zara.com/pl" target="_blank" class="store-logo" style="background: #000;">Zara</a>
-                <a href="https://www2.hm.com/pl_pl" target="_blank" class="store-logo" style="background: #e4002b;">H&M</a>
-                <a href="https://www.reserved.com/pl" target="_blank" class="store-logo" style="background: #1e1e1e;">Reserved</a>
-                <a href="https://www.c-and-a.com/pl" target="_blank" class="store-logo" style="background: #00539f;">C&A</a>
-                <a href="https://www.pullandbear.com/pl" target="_blank" class="store-logo" style="background: #8b4513;">Pull&Bear</a>
+                <a href="https://www.woolworths.co.za" target="_blank" class="store-logo" style="background: #006633;">Woolworths</a>
+                <a href="https://www.edgars.co.za" target="_blank" class="store-logo" style="background: #000;">Edgars</a>
+                <a href="https://www.truworths.co.za" target="_blank" class="store-logo" style="background: #1e1e1e;">Truworths</a>
+                <a href="https://www.mrprice.co.za" target="_blank" class="store-logo" style="background: #e4002b;">Mr Price</a>
+                <a href="https://www.ackermans.co.za" target="_blank" class="store-logo" style="background: #ff6600;">Ackermans</a>
             </div>
         </div>
 
         <div class="category-section">
             <div class="category-title">📱 Electronics & Tech</div>
             <div class="store-grid">
-                <a href="https://www.mediamarkt.pl" target="_blank" class="store-logo" style="background: #e30613;">MediaMarkt</a>
-                <a href="https://www.euro.com.pl" target="_blank" class="store-logo" style="background: #0066cc;">RTV Euro AGD</a>
-                <a href="https://www.x-kom.pl" target="_blank" class="store-logo" style="background: #ff6600;">x-kom</a>
-                <a href="https://www.mediaexpert.pl" target="_blank" class="store-logo" style="background: #000;">Media Expert</a>
-                <a href="https://www.samsung.com/pl" target="_blank" class="store-logo" style="background: #0071ce;">Samsung</a>
+                <a href="https://www.game.co.za" target="_blank" class="store-logo" style="background: #e30613;">Game</a>
+                <a href="https://www.incredible.co.za" target="_blank" class="store-logo" style="background: #0066cc;">Incredible Connection</a>
+                <a href="https://www.takealot.com" target="_blank" class="store-logo" style="background: #0b79bf;">Takealot</a>
+                <a href="https://www.hificorp.co.za" target="_blank" class="store-logo" style="background: #000;">HiFi Corp</a>
+                <a href="https://www.dionwired.co.za" target="_blank" class="store-logo" style="background: #ff6600;">Dion Wired</a>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-title">🍽️ Restaurants & Food</div>
+            <div class="store-grid">
+                <a href="https://www.nandos.co.za" target="_blank" class="store-logo" style="background: #8B0000;">Nandos</a>
+                <a href="https://www.kfc.co.za" target="_blank" class="store-logo" style="background: #e4002b;">KFC</a>
+                <a href="https://www.oceanbasket.com" target="_blank" class="store-logo" style="background: #0066cc;">Ocean Basket</a>
+                <a href="https://www.steers.co.za" target="_blank" class="store-logo" style="background: #c41e3a;">Steers</a>
+                <a href="https://www.spur.co.za" target="_blank" class="store-logo" style="background: #8B4513;">Spur</a>
+                <a href="https://www.debonairspizza.co.za" target="_blank" class="store-logo" style="background: #ff6600;">Debonairs</a>
             </div>
         </div>
 
         <div class="category-section">
             <div class="category-title">🏬 Malls & Shopping Centers</div>
             <div class="store-grid">
-                <a href="https://www.galeriakrakowska.pl" target="_blank" class="store-logo" style="background: #d4af37;">Galeria Krakowska</a>
-                <a href="https://arkadia.com.pl" target="_blank" class="store-logo" style="background: #c41e3a;">Arkadia</a>
-                <a href="https://www.zlotetarasy.pl" target="_blank" class="store-logo" style="background: #003366;">Złote Tarasy</a>
+                <a href="https://www.sandtoncity.com" target="_blank" class="store-logo" style="background: #d4af37;">Sandton City</a>
+                <a href="https://www.waterfront.co.za" target="_blank" class="store-logo" style="background: #0066cc;">V&A Waterfront</a>
+                <a href="https://www.gatewayworld.co.za" target="_blank" class="store-logo" style="background: #003366;">Gateway Theatre</a>
             </div>
         </div>
 
-        <h3 class="section-title">Co chcesz zrobić?</h3>
+        <h3 class="section-title">What would you like to do?</h3>
         <div class="features-grid">
             <div class="feature-card" data-target="scan">
                 <span class="feature-icon">🔍</span>
-                Skanuj
+                Scan
             </div>
             <div class="feature-card" data-target="map">
                 <span class="feature-icon">🗺️</span>
-                Mapa
+                Map
             </div>
             <div class="feature-card" data-target="profile">
                 <span class="feature-icon">👤</span>
-                Profil
+                Profile
             </div>
         </div>
 
         <div class="recent-scans">
-            <h3 class="section-title">Ostatnie skany</h3>
+            <h3 class="section-title">Recent Scans</h3>
             ${historyHtml}
         </div>
       </div>
     `;
   } else if (currentState === 'deals') {
     const allDeals = getAllDeals();
-    const voivodeships = getAllVoivodeships();
+    const provinces = getAllProvinces();
     const cities = [...new Set(allDeals.map(d => d.city))].sort();
     const stores = [...new Set(allDeals.map(d => d.store))].sort();
 
     content = `
       <div id="deals-view" class="fade-in">
-        <h2 class="section-title">🎟️ Oferty i Kupony</h2>
+        <h2 class="section-title">🎟️ Offers & Coupons</h2>
         
         <div class="product-card" style="text-align: left; margin-bottom: 1.5rem;">
           <div class="form-group">
-            <label>📍 Województwo</label>
-            <select id="voivodeship-filter" class="form-input">
-              <option value="">Wszystkie województwa</option>
-              ${voivodeships.map(v => `<option value="${v}">${v}</option>`).join('')}
+            <label>📍 Province</label>
+            <select id="province-filter" class="form-input">
+              <option value="">All provinces</option>
+              ${provinces.map(p => `<option value="${p}">${p}</option>`).join('')}
             </select>
           </div>
           <div class="form-group">
-            <label>🏛️ Miasto</label>
+            <label>🏛️ City</label>
             <select id="city-filter" class="form-input">
-              <option value="">Wszystkie miasta</option>
+              <option value="">All cities</option>
               ${cities.map(city => `<option value="${city}">${city}</option>`).join('')}
             </select>
           </div>
           <div class="form-group">
-            <label>🛣️ Ulica (opcjonalnie)</label>
-            <input type="text" id="street-filter" class="form-input" placeholder="np. Krakowskie Przedmieście">
+            <label>🛣️ Street (optional)</label>
+            <input type="text" id="street-filter" class="form-input" placeholder="e.g. Sandton Drive">
           </div>
           <div class="form-group">
-            <label>🏪 Sklep</label>
+            <label>🏪 Store</label>
             <select id="store-filter" class="form-input">
-              <option value="">Wszystkie sklepy</option>
+              <option value="">All stores</option>
               ${stores.map(store => `<option value="${store}">${store}</option>`).join('')}
             </select>
           </div>
@@ -170,7 +200,7 @@ function render() {
                 <div>🏛️ ${deal.city}</div>
                 <div class="deal-street">🛣️ ${deal.street}</div>
               </div>
-              <div class="deal-validity">Ważne do: ${deal.validUntil}</div>
+              <div class="deal-validity">Valid until: ${deal.validUntil}</div>
             </div>
           `).join('')}
         </div>
@@ -179,9 +209,9 @@ function render() {
   } else if (currentState === 'scan') {
     content = `
       <div id="scan-view" class="fade-in">
-        <h3 class="section-title">Skanowanie...</h3>
+        <h3 class="section-title">Scanning...</h3>
         <div id="interactive" class="viewport"></div>
-        <button class="btn-secondary" style="margin-top: 1rem;" data-target="home">Anuluj</button>
+        <button class="btn-secondary" style="margin-top: 1rem;" data-target="home">Cancel</button>
       </div>
     `;
   } else if (currentState === 'map') {
@@ -190,7 +220,7 @@ function render() {
         <button class="map-close-btn" data-target="home">✕</button>
         <div class="map-container">
             <div class="map-search-bar">
-                <input type="text" id="map-search-input" class="map-search-input" placeholder="Szukaj produktu (np. buty) lub sklepu...">
+                <input type="text" id="map-search-input" class="map-search-input" placeholder="Search for product (e.g. shoes) or store...">
                 <button id="map-search-btn" class="map-search-btn">🔍</button>
             </div>
             <div id="full-map" style="height: 100%; width: 100%;"></div>
@@ -200,9 +230,9 @@ function render() {
   } else if (currentState === 'product') {
     content = `
       <div id="product-view" class="fade-in">
-        <button class="back-btn" data-target="home">← Wróć</button>
-        ${currentProduct ? ProductCard(currentProduct) : '<p>Ładowanie produktu...</p>'}
-        <h3 class="section-title" style="margin-top: 1.5rem;">Dostępność w pobliżu</h3>
+        <button class="back-btn" data-target="home">← Back</button>
+        ${currentProduct ? ProductCard(currentProduct) : '<p>Loading product...</p>'}
+        <h3 class="section-title" style="margin-top: 1.5rem;">Availability Nearby</h3>
         <div id="map" style="height: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
       </div>
     `;
@@ -212,43 +242,43 @@ function render() {
       ? history.map(h => `
           <div class="history-item" onclick="window.location.hash = '#product:${h.barcode}'">
             <div class="history-info">
-                <span class="history-name">${h.name || 'Nieznany produkt'}</span>
+                <span class="history-name">${h.name || 'Unknown product'}</span>
                 <span class="history-date">${new Date(h.date).toLocaleDateString()}</span>
             </div>
           </div>
         `).join('')
-      : '<p>Brak historii.</p>';
+      : '<p>No history.</p>';
 
     content = `
       <div id="profile-view" class="fade-in">
-        <h2 class="section-title">Twój Profil</h2>
+        <h2 class="section-title">Your Profile</h2>
         
         <div class="product-card" style="text-align: left;">
             <div class="form-group">
-                <label>Imię</label>
-                <input type="text" id="profile-name" class="form-input" value="${profile.name || ''}" placeholder="Wpisz swoje imię">
+                <label>Name</label>
+                <input type="text" id="profile-name" class="form-input" value="${profile.name || ''}" placeholder="Enter your name">
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" id="profile-email" class="form-input" value="${profile.email || ''}" placeholder="twoj@email.com">
+                <input type="email" id="profile-email" class="form-input" value="${profile.email || ''}" placeholder="your@email.com">
             </div>
             <div class="form-group">
-                <label>Lokalizacja (Miasto)</label>
+                <label>Location (City)</label>
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="profile-city" class="form-input" value="${profile.location?.name || ''}" placeholder="np. Warszawa">
+                    <input type="text" id="profile-city" class="form-input" value="${profile.location?.name || ''}" placeholder="e.g. Johannesburg">
                     <button id="detect-location" class="btn-secondary" style="width: auto; margin: 0;">📍</button>
                 </div>
-                <small style="color: var(--text-light);">Zostaw puste, aby używać GPS.</small>
+                <small style="color: var(--text-light);">Leave empty to use GPS.</small>
             </div>
-            <button id="save-profile" class="btn-primary">Zapisz zmiany</button>
+            <button id="save-profile" class="btn-primary">Save Changes</button>
         </div>
 
-        <h3 class="section-title">Pełna historia</h3>
+        <h3 class="section-title">Full History</h3>
         <div class="history-list">
             ${historyHtml}
         </div>
         
-        <button id="clear-history" class="btn-secondary" style="margin-top: 2rem; color: #ff4757;">Wyczyść historię</button>
+        <button id="clear-history" class="btn-secondary" style="margin-top: 2rem; color: #ff4757;">Clear History</button>
       </div>
     `;
   }
@@ -257,8 +287,7 @@ function render() {
     <div class="app-container">
       <header class="app-header">
         <div class="header-content">
-          <div class="app-logo">📍</div>
-          <h1>NearBuY</h1>
+          <img src="/logo.png" alt="E-Duze" style="height: 80px; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));">
         </div>
       </header>
       <main id="main-content">
@@ -283,7 +312,7 @@ function render() {
     });
   } else if (currentState === 'deals') {
     // Add filter event listeners
-    document.getElementById('voivodeship-filter').addEventListener('change', filterDeals);
+    document.getElementById('province-filter').addEventListener('change', filterDeals);
     document.getElementById('city-filter').addEventListener('change', filterDeals);
     document.getElementById('street-filter').addEventListener('input', filterDeals);
     document.getElementById('store-filter').addEventListener('change', filterDeals);
@@ -299,13 +328,13 @@ function render() {
         if (geocoded) {
           location = geocoded;
         } else {
-          alert('Nie znaleziono miasta. Spróbuj ponownie.');
+          alert('City not found. Please try again.');
           return;
         }
       }
 
       saveUserProfile({ name, email, location });
-      alert('Profil zapisany!');
+      alert('Profile saved!');
       render();
     });
 
@@ -316,14 +345,14 @@ function render() {
         });
         // Reverse geocoding could go here, but for now we just clear the manual entry to use GPS
         document.getElementById('profile-city').value = '';
-        alert('Używam GPS (zapisz profil, aby potwierdzić).');
+        alert('Using GPS (save profile to confirm).');
       } catch (e) {
-        alert('Błąd GPS: ' + e.message);
+        alert('GPS error: ' + e.message);
       }
     });
 
     document.getElementById('clear-history').addEventListener('click', () => {
-      if (confirm('Czy na pewno chcesz wyczyścić historię?')) {
+      if (confirm('Are you sure you want to clear your history?')) {
         clearHistory();
         render();
       }
@@ -359,7 +388,7 @@ async function onBarcodeDetected(code) {
     addToHistory(product);
     render();
   } else {
-    alert('Produkt nie znaleziony w bazach danych.');
+    alert('Product not found in database.');
     navigateTo('home');
   }
 }
@@ -372,7 +401,7 @@ async function initMap(elementId) {
   } catch (error) {
     console.error('Location error:', error);
     const el = document.getElementById(elementId);
-    if (el) el.innerHTML = '<p>Nie można pobrać lokalizacji.</p>';
+    if (el) el.innerHTML = '<p>Unable to get location.</p>';
   }
 }
 
@@ -402,28 +431,28 @@ async function handleMapSearch() {
     mapInstance = StoreMap('full-map', location.lat, location.lng, stores);
   } catch (error) {
     console.error('Search error:', error);
-    alert('Błąd wyszukiwania.');
+    alert('Search error.');
   }
 }
 
 function filterDeals() {
-  const voivodeshipFilter = document.getElementById('voivodeship-filter').value;
+  const provinceFilter = document.getElementById('province-filter').value;
   const cityFilter = document.getElementById('city-filter').value;
   const streetFilter = document.getElementById('street-filter').value.toLowerCase();
   const storeFilter = document.getElementById('store-filter').value;
 
   let deals = getAllDeals();
 
-  // Filter by voivodeship (updates city dropdown)
-  if (voivodeshipFilter) {
-    const citiesInVoivodeship = getCitiesByVoivodeship(voivodeshipFilter).map(c => c.name);
-    deals = deals.filter(d => citiesInVoivodeship.includes(d.city));
+  // Filter by province (updates city dropdown)
+  if (provinceFilter) {
+    const citiesInProvince = getCitiesByProvince(provinceFilter).map(c => c.name);
+    deals = deals.filter(d => citiesInProvince.includes(d.city));
 
-    // Update city dropdown to show only cities in selected voivodeship
+    // Update city dropdown to show only cities in selected province
     const citySelect = document.getElementById('city-filter');
     const currentCity = citySelect.value;
-    citySelect.innerHTML = '<option value="">Wszystkie miasta</option>' +
-      citiesInVoivodeship.sort().map(city =>
+    citySelect.innerHTML = '<option value="">All cities</option>' +
+      citiesInProvince.sort().map(city =>
         `<option value="${city}" ${city === currentCity ? 'selected' : ''}>${city}</option>`
       ).join('');
   }
@@ -445,7 +474,7 @@ function filterDeals() {
 
   const container = document.getElementById('deals-container');
   if (deals.length === 0) {
-    container.innerHTML = '<div class="product-card"><p>Brak ofert dla wybranych filtrów</p></div>';
+    container.innerHTML = '<div class="product-card"><p>No offers for selected filters</p></div>';
   } else {
     container.innerHTML = deals.map(deal => `
       <div class="deal-card">
@@ -461,7 +490,7 @@ function filterDeals() {
           <div>🏛️ ${deal.city}</div>
           <div class="deal-street">🛣️ ${deal.street}</div>
         </div>
-        <div class="deal-validity">Ważne do: ${deal.validUntil}</div>
+        <div class="deal-validity">Valid until: ${deal.validUntil}</div>
       </div>
     `).join('');
   }
@@ -476,4 +505,5 @@ window.addEventListener('hashchange', () => {
   }
 });
 
-render();
+// Initialize app with splash screen
+showSplashScreen();

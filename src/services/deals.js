@@ -1,52 +1,117 @@
-// Comprehensive deals data with specific addresses
+// Comprehensive deals data with South African stores, restaurants, and addresses
 const MOCK_DEALS = [
-    // Lublin - Biedronka
-    { id: 1, store: 'Biedronka', city: 'Lublin', street: 'ul. Krakowskie Przedmieście 15', product: 'Chleb pszenny', discount: '30%', price: '2.49 zł', validUntil: '2025-12-05', category: 'food' },
-    { id: 2, store: 'Biedronka', city: 'Lublin', street: 'ul. Lipowa 8', product: 'Mleko 2%', discount: '20%', price: '3.99 zł', validUntil: '2025-12-03', category: 'food' },
-    { id: 3, store: 'Biedronka', city: 'Lublin', street: 'ul. Narutowicza 22', product: 'Jabłka', discount: '40%', price: '2.99 zł/kg', validUntil: '2025-12-02', category: 'food' },
+    // Johannesburg - Supermarkets
+    { id: 1, store: 'Pick n Pay', city: 'Johannesburg', street: 'Sandton City, Sandton Drive', product: 'Whole Wheat Bread', discount: '30%', price: 'R 14.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 2, store: 'Pick n Pay', city: 'Johannesburg', street: 'Nelson Mandela Square', product: 'Fresh Milk 2L', discount: '20%', price: 'R 22.99', validUntil: '2025-12-03', category: 'food' },
+    { id: 3, store: 'Pick n Pay', city: 'Johannesburg', street: 'Rosebank Mall', product: 'Apples', discount: '40%', price: 'R 18.99/kg', validUntil: '2025-12-02', category: 'food' },
+    { id: 4, store: 'Checkers', city: 'Johannesburg', street: 'Eastgate Shopping Centre', product: 'Cheddar Cheese', discount: '25%', price: 'R 65.99', validUntil: '2025-12-04', category: 'food' },
+    { id: 5, store: 'Checkers', city: 'Johannesburg', street: 'Cresta Shopping Centre', product: 'Coffee Beans 500g', discount: '35%', price: 'R 89.99', validUntil: '2025-12-06', category: 'food' },
+    { id: 6, store: 'Woolworths', city: 'Johannesburg', street: 'Hyde Park Corner', product: 'Organic Vegetables', discount: '2+1 free', price: 'R 35.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 7, store: 'Woolworths', city: 'Johannesburg', street: 'Sandton City', product: 'Premium Steak', discount: '30%', price: 'R 149.99/kg', validUntil: '2025-12-03', category: 'food' },
+    { id: 8, store: 'Shoprite', city: 'Johannesburg', street: 'Mall of Africa', product: 'Rice 10kg', discount: '40%', price: 'R 129.99', validUntil: '2025-12-08', category: 'food' },
+    { id: 9, store: 'Spar', city: 'Johannesburg', street: 'Melrose Arch', product: 'Fresh Chicken', discount: '25%', price: 'R 54.99/kg', validUntil: '2025-12-05', category: 'food' },
 
-    // Lublin - Lidl
-    { id: 4, store: 'Lidl', city: 'Lublin', street: 'ul. Witosa 12', product: 'Ser żółty', discount: '25%', price: '12.99 zł', validUntil: '2025-12-04', category: 'food' },
-    { id: 5, store: 'Lidl', city: 'Lublin', street: 'ul. Aleje Racławickie 18', product: 'Kawa ziarnista', discount: '35%', price: '19.99 zł', validUntil: '2025-12-06', category: 'food' },
+    // Johannesburg - Restaurants
+    { id: 10, store: 'Nandos', city: 'Johannesburg', street: 'Sandton City', product: 'Quarter Chicken Meal', discount: '20%', price: 'R 79.99', validUntil: '2025-12-10', category: 'restaurant' },
+    { id: 11, store: 'KFC', city: 'Johannesburg', street: 'Rosebank Mall', product: 'Family Feast', discount: '30%', price: 'R 189.99', validUntil: '2025-12-07', category: 'restaurant' },
+    { id: 12, store: 'Steers', city: 'Johannesburg', street: 'Eastgate', product: 'King Steer Burger Combo', discount: '25%', price: 'R 69.99', validUntil: '2025-12-06', category: 'restaurant' },
+    { id: 13, store: 'Ocean Basket', city: 'Johannesburg', street: 'Nelson Mandela Square', product: 'Seafood Platter', discount: '15%', price: 'R 299.99', validUntil: '2025-12-12', category: 'restaurant' },
+    { id: 14, store: 'Mugg & Bean', city: 'Johannesburg', street: 'Sandton City', product: 'Breakfast Special', discount: '20%', price: 'R 89.99', validUntil: '2025-12-08', category: 'restaurant' },
 
-    // Lublin - Żabka
-    { id: 6, store: 'Żabka', city: 'Lublin', street: 'ul. Chopina 5', product: 'Napoje energetyczne', discount: '2+1 gratis', price: '5.99 zł', validUntil: '2025-12-05', category: 'drinks' },
-    { id: 7, store: 'Żabka', city: 'Lublin', street: 'ul. Peowiaków 10', product: 'Hot-dog', discount: '30%', price: '4.99 zł', validUntil: '2025-12-03', category: 'food' },
+    // Johannesburg - Electronics & Fashion
+    { id: 15, store: 'Game', city: 'Johannesburg', street: 'Mall of Africa, Waterfall', product: 'Wireless Headphones', discount: '50%', price: 'R 799.99', validUntil: '2025-12-15', category: 'electronics' },
+    { id: 16, store: 'Edgars', city: 'Johannesburg', street: 'Sandton City', product: 'Winter Jacket', discount: '60%', price: 'R 1,299.99', validUntil: '2025-12-20', category: 'fashion' },
+    { id: 17, store: 'Incredible Connection', city: 'Johannesburg', street: 'Rosebank Mall', product: 'Laptop', discount: '25%', price: 'R 8,999.99', validUntil: '2025-12-18', category: 'electronics' },
 
-    // Lublin - MediaMarkt
-    { id: 8, store: 'MediaMarkt', city: 'Lublin', street: 'Galeria Olimp, ul. Lipowa 13', product: 'Słuchawki bezprzewodowe', discount: '50%', price: '149.99 zł', validUntil: '2025-12-15', category: 'electronics' },
+    // Cape Town - Supermarkets
+    { id: 18, store: 'Pick n Pay', city: 'Cape Town', street: 'V&A Waterfront', product: 'Whole Wheat Bread', discount: '30%', price: 'R 14.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 19, store: 'Checkers', city: 'Cape Town', street: 'Canal Walk Shopping Centre', product: 'Cheddar Cheese', discount: '25%', price: 'R 65.99', validUntil: '2025-12-04', category: 'food' },
+    { id: 20, store: 'Woolworths', city: 'Cape Town', street: 'V&A Waterfront', product: 'Red Wine', discount: '40%', price: 'R 129.99', validUntil: '2025-12-10', category: 'drinks' },
+    { id: 21, store: 'Shoprite', city: 'Cape Town', street: 'Tyger Valley Centre', product: 'Laundry Detergent', discount: '35%', price: 'R 89.99', validUntil: '2025-12-06', category: 'household' },
+    { id: 22, store: 'Spar', city: 'Cape Town', street: 'Gardens Centre', product: 'Fresh Vegetables', discount: '30%', price: 'R 24.99/kg', validUntil: '2025-12-05', category: 'food' },
 
-    // Lublin - Zara
-    { id: 9, store: 'Zara', city: 'Lublin', street: 'Galeria Olimp, ul. Lipowa 13', product: 'Kurtka zimowa', discount: '60%', price: '199.99 zł', validUntil: '2025-12-20', category: 'fashion' },
+    // Cape Town - Restaurants
+    { id: 23, store: 'Nandos', city: 'Cape Town', street: 'V&A Waterfront', product: 'Full Chicken & Sides', discount: '25%', price: 'R 199.99', validUntil: '2025-12-10', category: 'restaurant' },
+    { id: 24, store: 'Ocean Basket', city: 'Cape Town', street: 'Canal Walk', product: 'Hake & Chips', discount: '20%', price: 'R 119.99', validUntil: '2025-12-12', category: 'restaurant' },
+    { id: 25, store: 'Spur', city: 'Cape Town', street: 'Cavendish Square', product: 'Ribs Combo', discount: '30%', price: 'R 149.99', validUntil: '2025-12-09', category: 'restaurant' },
+    { id: 26, store: 'Wimpy', city: 'Cape Town', street: 'Tyger Valley', product: 'Breakfast Platter', discount: '15%', price: 'R 79.99', validUntil: '2025-12-07', category: 'restaurant' },
 
-    // Warszawa
-    { id: 10, store: 'Biedronka', city: 'Warszawa', street: 'ul. Marszałkowska 45', product: 'Chleb pszenny', discount: '30%', price: '2.49 zł', validUntil: '2025-12-05', category: 'food' },
-    { id: 11, store: 'Lidl', city: 'Warszawa', street: 'ul. Puławska 120', product: 'Ser żółty', discount: '25%', price: '12.99 zł', validUntil: '2025-12-04', category: 'food' },
-    { id: 12, store: 'Carrefour', city: 'Warszawa', street: 'ul. Targowa 72', product: 'Wino czerwone', discount: '40%', price: '24.99 zł', validUntil: '2025-12-10', category: 'drinks' },
-    { id: 13, store: 'Auchan', city: 'Warszawa', street: 'ul. Modlińska 6', product: 'Proszek do prania', discount: '35%', price: '29.99 zł', validUntil: '2025-12-06', category: 'household' },
-    { id: 14, store: 'MediaMarkt', city: 'Warszawa', street: 'Galeria Mokotów, ul. Wołoska 12', product: 'Smartwatch', discount: '40%', price: '299.99 zł', validUntil: '2025-12-10', category: 'electronics' },
-    { id: 15, store: 'Zara', city: 'Warszawa', street: 'Złote Tarasy, ul. Złota 59', product: 'Sweter wełniany', discount: '50%', price: '89.99 zł', validUntil: '2025-12-15', category: 'fashion' },
-    { id: 16, store: 'H&M', city: 'Warszawa', street: 'Arkadia, Al. Jana Pawła II 82', product: 'Jeansy', discount: '40%', price: '79.99 zł', validUntil: '2025-12-13', category: 'fashion' },
+    // Cape Town - Fashion & Electronics
+    { id: 27, store: 'Incredible Connection', city: 'Cape Town', street: 'Canal Walk', product: 'Smartwatch', discount: '40%', price: 'R 1,899.99', validUntil: '2025-12-10', category: 'electronics' },
+    { id: 28, store: 'Truworths', city: 'Cape Town', street: 'V&A Waterfront', product: 'Wool Sweater', discount: '50%', price: 'R 599.99', validUntil: '2025-12-15', category: 'fashion' },
+    { id: 29, store: 'Mr Price', city: 'Cape Town', street: 'Canal Walk', product: 'Jeans', discount: '40%', price: 'R 399.99', validUntil: '2025-12-13', category: 'fashion' },
 
-    // Kraków
-    { id: 17, store: 'Biedronka', city: 'Kraków', street: 'ul. Floriańska 12', product: 'Mleko 2%', discount: '20%', price: '3.99 zł', validUntil: '2025-12-03', category: 'food' },
-    { id: 18, store: 'Lidl', city: 'Kraków', street: 'ul. Wielicka 28', product: 'Czekolada', discount: '50%', price: '4.99 zł', validUntil: '2025-12-01', category: 'food' },
-    { id: 19, store: 'Żabka', city: 'Kraków', street: 'ul. Grodzka 45', product: 'Hot-dog', discount: '30%', price: '4.99 zł', validUntil: '2025-12-03', category: 'food' },
-    { id: 20, store: 'Zara', city: 'Kraków', street: 'Galeria Krakowska, ul. Pawia 5', product: 'Kurtka zimowa', discount: '60%', price: '199.99 zł', validUntil: '2025-12-20', category: 'fashion' },
+    // Durban - Supermarkets
+    { id: 30, store: 'Pick n Pay', city: 'Durban', street: 'Gateway Theatre of Shopping', product: 'Fresh Milk 2L', discount: '20%', price: 'R 22.99', validUntil: '2025-12-03', category: 'food' },
+    { id: 31, store: 'Checkers', city: 'Durban', street: 'Pavilion Shopping Centre', product: 'Chocolate Bar', discount: '50%', price: 'R 19.99', validUntil: '2025-12-01', category: 'food' },
+    { id: 32, store: 'Spar', city: 'Durban', street: 'Florida Road', product: 'Hot Meal Deal', discount: '30%', price: 'R 34.99', validUntil: '2025-12-03', category: 'food' },
+    { id: 33, store: 'Woolworths', city: 'Durban', street: 'Gateway Theatre', product: 'Sushi Platter', discount: '25%', price: 'R 89.99', validUntil: '2025-12-06', category: 'food' },
 
-    // Gdańsk
-    { id: 21, store: 'Lidl', city: 'Gdańsk', street: 'ul. Grunwaldzka 82', product: 'Kawa ziarnista', discount: '35%', price: '19.99 zł', validUntil: '2025-12-06', category: 'food' },
-    { id: 22, store: 'MediaMarkt', city: 'Gdańsk', street: 'Galeria Bałtycka, ul. Grunwaldzka 141', product: 'Słuchawki bezprzewodowe', discount: '50%', price: '149.99 zł', validUntil: '2025-12-15', category: 'electronics' },
+    // Durban - Restaurants
+    { id: 34, store: 'Nandos', city: 'Durban', street: 'Gateway Theatre', product: 'Peri-Peri Chicken', discount: '20%', price: 'R 84.99', validUntil: '2025-12-10', category: 'restaurant' },
+    { id: 35, store: 'Debonairs Pizza', city: 'Durban', street: 'Pavilion', product: 'Large Pizza Deal', discount: '35%', price: 'R 119.99', validUntil: '2025-12-08', category: 'restaurant' },
+    { id: 36, store: 'KFC', city: 'Durban', street: 'Musgrave Centre', product: 'Streetwise Two', discount: '25%', price: 'R 49.99', validUntil: '2025-12-07', category: 'restaurant' },
+    { id: 37, store: 'Steers', city: 'Durban', street: 'Gateway Theatre', product: 'Burger Combo', discount: '20%', price: 'R 64.99', validUntil: '2025-12-06', category: 'restaurant' },
 
-    // Poznań
-    { id: 23, store: 'Lidl', city: 'Poznań', street: 'ul. Półwiejska 42', product: 'Czekolada', discount: '50%', price: '4.99 zł', validUntil: '2025-12-01', category: 'food' },
-    { id: 24, store: 'H&M', city: 'Poznań', street: 'Stary Browar, ul. Półwiejska 42', product: 'Koszula', discount: '30%', price: '49.99 zł', validUntil: '2025-12-10', category: 'fashion' },
+    // Durban - Fashion
+    { id: 38, store: 'Edgars', city: 'Durban', street: 'Gateway Theatre of Shopping', product: 'Winter Jacket', discount: '60%', price: 'R 1,299.99', validUntil: '2025-12-20', category: 'fashion' },
 
-    // Wrocław
-    { id: 25, store: 'Carrefour', city: 'Wrocław', street: 'ul. Legnicka 58', product: 'Kurczak świeży', discount: '25%', price: '14.99 zł/kg', validUntil: '2025-12-02', category: 'food' },
+    // Pretoria - Supermarkets
+    { id: 39, store: 'Checkers', city: 'Pretoria', street: 'Menlyn Park Shopping Centre', product: 'Coffee Beans 500g', discount: '35%', price: 'R 89.99', validUntil: '2025-12-06', category: 'food' },
+    { id: 40, store: 'Pick n Pay', city: 'Pretoria', street: 'Brooklyn Mall', product: 'Fresh Fruit', discount: '30%', price: 'R 29.99/kg', validUntil: '2025-12-05', category: 'food' },
+    { id: 41, store: 'Woolworths', city: 'Pretoria', street: 'Menlyn Park', product: 'Gourmet Meals', discount: '25%', price: 'R 79.99', validUntil: '2025-12-08', category: 'food' },
 
-    // Katowice
-    { id: 26, store: 'Auchan', city: 'Katowice', street: 'ul. Chorzowska 107', product: 'Papier toaletowy', discount: '3+1 gratis', price: '19.99 zł', validUntil: '2025-12-04', category: 'household' },
+    // Pretoria - Restaurants
+    { id: 42, store: 'Nandos', city: 'Pretoria', street: 'Menlyn Park', product: 'Chicken Wrap Meal', discount: '20%', price: 'R 74.99', validUntil: '2025-12-10', category: 'restaurant' },
+    { id: 43, store: 'Mugg & Bean', city: 'Pretoria', street: 'Brooklyn Mall', product: 'Coffee & Muffin', discount: '15%', price: 'R 54.99', validUntil: '2025-12-08', category: 'restaurant' },
+    { id: 44, store: 'Roman\'s Pizza', city: 'Pretoria', street: 'Wonderpark Shopping Centre', product: 'Family Pizza Deal', discount: '40%', price: 'R 149.99', validUntil: '2025-12-09', category: 'restaurant' },
+
+    // Pretoria - Electronics
+    { id: 45, store: 'Game', city: 'Pretoria', street: 'Menlyn Park', product: 'Wireless Headphones', discount: '50%', price: 'R 799.99', validUntil: '2025-12-15', category: 'electronics' },
+
+    // Port Elizabeth - Supermarkets & Restaurants
+    { id: 46, store: 'Checkers', city: 'Port Elizabeth', street: 'Greenacres Shopping Centre', product: 'Chocolate Bar', discount: '50%', price: 'R 19.99', validUntil: '2025-12-01', category: 'food' },
+    { id: 47, store: 'Pick n Pay', city: 'Port Elizabeth', street: 'The Bridge Shopping Centre', product: 'Fresh Bread', discount: '30%', price: 'R 14.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 48, store: 'Nandos', city: 'Port Elizabeth', street: 'Greenacres', product: 'Quarter Chicken', discount: '20%', price: 'R 79.99', validUntil: '2025-12-10', category: 'restaurant' },
+    { id: 49, store: 'Ocean Basket', city: 'Port Elizabeth', street: 'Walmer Park', product: 'Fish & Chips', discount: '25%', price: 'R 99.99', validUntil: '2025-12-12', category: 'restaurant' },
+
+    // Port Elizabeth - Fashion
+    { id: 50, store: 'Mr Price', city: 'Port Elizabeth', street: 'The Bridge Shopping Centre', product: 'Shirt', discount: '30%', price: 'R 249.99', validUntil: '2025-12-10', category: 'fashion' },
+
+    // Bloemfontein
+    { id: 51, store: 'Shoprite', city: 'Bloemfontein', street: 'Mimosa Mall', product: 'Fresh Chicken', discount: '25%', price: 'R 59.99/kg', validUntil: '2025-12-02', category: 'food' },
+    { id: 52, store: 'Checkers', city: 'Bloemfontein', street: 'Loch Logan Waterfront', product: 'Dairy Products', discount: '30%', price: 'R 44.99', validUntil: '2025-12-06', category: 'food' },
+    { id: 53, store: 'KFC', city: 'Bloemfontein', street: 'Mimosa Mall', product: 'Bucket Meal', discount: '25%', price: 'R 159.99', validUntil: '2025-12-07', category: 'restaurant' },
+
+    // Polokwane
+    { id: 54, store: 'Spar', city: 'Polokwane', street: 'Mall of the North', product: 'Toilet Paper 12-pack', discount: '3+1 free', price: 'R 79.99', validUntil: '2025-12-04', category: 'household' },
+    { id: 55, store: 'Pick n Pay', city: 'Polokwane', street: 'Mall of the North', product: 'Fresh Vegetables', discount: '35%', price: 'R 19.99/kg', validUntil: '2025-12-05', category: 'food' },
+    { id: 56, store: 'Steers', city: 'Polokwane', street: 'Mall of the North', product: 'Burger Deal', discount: '20%', price: 'R 59.99', validUntil: '2025-12-06', category: 'restaurant' },
+
+    // Nelspruit
+    { id: 57, store: 'Woolworths', city: 'Nelspruit', street: 'Riverside Mall', product: 'Premium Coffee', discount: '30%', price: 'R 69.99', validUntil: '2025-12-08', category: 'food' },
+    { id: 58, store: 'Checkers', city: 'Nelspruit', street: 'Ilanga Mall', product: 'Breakfast Cereals', discount: '40%', price: 'R 39.99', validUntil: '2025-12-06', category: 'food' },
+    { id: 59, store: 'Nandos', city: 'Nelspruit', street: 'Riverside Mall', product: 'Chicken Meal', discount: '20%', price: 'R 79.99', validUntil: '2025-12-10', category: 'restaurant' },
+
+    // Rustenburg
+    { id: 60, store: 'Pick n Pay', city: 'Rustenburg', street: 'Waterfall Mall', product: 'Fresh Milk', discount: '20%', price: 'R 22.99', validUntil: '2025-12-03', category: 'food' },
+    { id: 61, store: 'Shoprite', city: 'Rustenburg', street: 'Waterfall Mall', product: 'Meat Special', discount: '35%', price: 'R 89.99/kg', validUntil: '2025-12-05', category: 'food' },
+    { id: 62, store: 'Debonairs Pizza', city: 'Rustenburg', street: 'Waterfall Mall', product: 'Triple Decker', discount: '30%', price: 'R 129.99', validUntil: '2025-12-08', category: 'restaurant' },
+
+    // Kimberley
+    { id: 63, store: 'Checkers', city: 'Kimberley', street: 'Diamond Pavilion', product: 'Snacks Bundle', discount: '45%', price: 'R 54.99', validUntil: '2025-12-07', category: 'food' },
+    { id: 64, store: 'Spar', city: 'Kimberley', street: 'Stockdale Street', product: 'Fresh Bread', discount: '25%', price: 'R 12.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 65, store: 'KFC', city: 'Kimberley', street: 'Diamond Pavilion', product: 'Family Meal', discount: '30%', price: 'R 189.99', validUntil: '2025-12-07', category: 'restaurant' },
+
+    // Pietermaritzburg
+    { id: 66, store: 'Pick n Pay', city: 'Pietermaritzburg', street: 'Liberty Midlands Mall', product: 'Grocery Essentials', discount: '25%', price: 'R 199.99', validUntil: '2025-12-06', category: 'food' },
+    { id: 67, store: 'Woolworths', city: 'Pietermaritzburg', street: 'Liberty Midlands Mall', product: 'Fresh Salads', discount: '30%', price: 'R 49.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 68, store: 'Mugg & Bean', city: 'Pietermaritzburg', street: 'Liberty Midlands Mall', product: 'Lunch Special', discount: '20%', price: 'R 99.99', validUntil: '2025-12-08', category: 'restaurant' },
+
+    // East London
+    { id: 69, store: 'Checkers', city: 'East London', street: 'Hemingways Mall', product: 'Frozen Foods', discount: '40%', price: 'R 69.99', validUntil: '2025-12-06', category: 'food' },
+    { id: 70, store: 'Pick n Pay', city: 'East London', street: 'Vincent Park Centre', product: 'Bakery Items', discount: '35%', price: 'R 29.99', validUntil: '2025-12-05', category: 'food' },
+    { id: 71, store: 'Ocean Basket', city: 'East London', street: 'Hemingways Mall', product: 'Seafood Special', discount: '20%', price: 'R 249.99', validUntil: '2025-12-12', category: 'restaurant' },
 ];
 
 export function getAllDeals() {
