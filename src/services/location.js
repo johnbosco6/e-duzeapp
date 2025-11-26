@@ -32,7 +32,10 @@ export function getUserLocation() {
 }
 
 export async function geocodeCity(cityName) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}&limit=1`;
+    // Prioritize South African results by adding country code
+    const searchQuery = `${cityName}, South Africa`;
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&countrycodes=za&limit=1`;
+
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -43,6 +46,19 @@ export async function geocodeCity(cityName) {
                 name: data[0].display_name
             };
         }
+
+        // Fallback: try without country specification if first search fails
+        const fallbackUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}&limit=1`;
+        const fallbackResponse = await fetch(fallbackUrl);
+        const fallbackData = await fallbackResponse.json();
+        if (fallbackData && fallbackData.length > 0) {
+            return {
+                lat: parseFloat(fallbackData[0].lat),
+                lng: parseFloat(fallbackData[0].lon),
+                name: fallbackData[0].display_name
+            };
+        }
+
         return null;
     } catch (error) {
         console.error('Geocoding error:', error);

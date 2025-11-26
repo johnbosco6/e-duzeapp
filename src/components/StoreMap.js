@@ -98,14 +98,14 @@ export default function StoreMap(elementId, lat, lng, stores = []) {
     const userMarker = L.marker([lat, lng], { icon: userIcon }).addTo(map);
     userMarker.bindPopup(`
         <div class="map-popup-simple">
-            <strong>📍 Twoja lokalizacja</strong>
+            <strong>📍 Your Location</strong>
         </div>
     `).openPopup();
 
     // Store markers with letter icons
     stores.forEach((store) => {
         if (store.lat && store.lon) {
-            const storeName = store.tags?.name || 'Sklep';
+            const storeName = store.tags?.name || 'Store';
             const storeBrand = store.tags?.brand || '';
             const letter = getStoreInitial(storeName, storeBrand);
             const color = getStoreColor(storeName, storeBrand);
@@ -119,7 +119,7 @@ export default function StoreMap(elementId, lat, lng, stores = []) {
                     <strong>🏪 ${storeName}</strong>
                     ${storeBrand ? `<p>${storeBrand}</p>` : ''}
                     <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lon}', '_blank')" class="map-nav-btn">
-                        🧭 Nawiguj
+                        🧭 Navigate
                     </button>
                 </div>
             `);
