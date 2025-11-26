@@ -9,18 +9,25 @@ export default defineConfig({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
             manifest: {
-                name: 'NearBuY - Product Finder',
-                short_name: 'NearBuY',
-                description: 'Scan barcodes and find products in nearby stores in Poland',
-                theme_color: '#FF6B00',
+                name: 'E-DuZe',
+                short_name: 'E-DuZe',
+                description: 'Scan barcodes and find products in nearby stores in South Africa',
+                theme_color: '#0066CC',
+                display: 'standalone',
+                background_color: '#0066CC',
                 icons: [
                     {
-                        src: 'pwa-192x192.png',
+                        src: '/logo.png',
+                        sizes: 'any',
+                        type: 'image/png'
+                    },
+                    {
+                        src: '/logo.png',
                         sizes: '192x192',
                         type: 'image/png'
                     },
                     {
-                        src: 'pwa-512x512.png',
+                        src: '/logo.png',
                         sizes: '512x512',
                         type: 'image/png'
                     }
