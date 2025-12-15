@@ -19,6 +19,10 @@ import {
 } from './services/storage.js';
 import { getAllDeals, getDealsByCity, getDealsByStore, getDealsByLocation } from './services/deals.js';
 import { SOUTH_AFRICAN_CITIES, getAllProvinces, getCitiesByProvince } from './services/cities.js';
+import { initChatService } from './services/chat.js';
+
+// Initialize Chat Service
+initChatService();
 
 // Register Service Worker
 const updateSW = registerSW({

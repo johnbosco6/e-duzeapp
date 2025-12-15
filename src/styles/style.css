@@ -1470,7 +1470,153 @@ body {
   }
 }
 
-/* --- MESSAGING & FRIENDS STYLES --- */
+/* --- REAL-TIME CHAT STYLES --- */
+
+.chat-messages-area {
+  flex: 1;
+  background: #f0f2f5;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-input-area {
+  padding: 10px;
+  background: white;
+  border-top: 2px solid #ddd;
+  display: flex;
+  gap: 10px;
+}
+
+#chat-input {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 2px solid #ddd;
+  outline: none;
+  font-family: inherit;
+}
+
+#chat-input:focus {
+  border-color: var(--accent-blue);
+}
+
+#chat-send-btn {
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s;
+}
+
+#chat-send-btn:active {
+  transform: scale(0.9);
+}
+
+.chat-bubble-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 80%;
+}
+
+.chat-bubble-row.me {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-bubble-row.other {
+  align-self: flex-start;
+}
+
+.chat-bubble-avatar {
+  font-size: 1.5rem;
+  background: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+}
+
+.chat-bubble {
+  padding: 10px 14px;
+  border-radius: 18px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble.me {
+  background: var(--accent-blue);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble.other {
+  background: white;
+  color: var(--text-color);
+  border-bottom-left-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.chat-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.chat-bubble-name {
+  font-weight: 700;
+}
+
+.chat-bubble-text {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.delete-msg-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble:hover .delete-msg-btn {
+  display: flex;
+}
+
+.loading-text {
+  text-align: center;
+  color: #999;
+  padding: 1rem;
+  font-style: italic;
+}
+
 
 .msg-section {
   background: var(--white);
