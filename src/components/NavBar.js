@@ -15,6 +15,10 @@ export default function NavBar(activeTab = 'home') {
         <div class="nav-icon-3d">🎟️</div>
         <span>Offers</span>
       </button>
+      <button class="nav-btn ${getActive('messaging')}" data-target="messaging">
+        <div class="nav-icon-3d">💬</div>
+        <span>Chat</span>
+      </button>
       <button class="nav-btn ${getActive('map')}" data-target="map">
         <div class="nav-icon-3d">🗺️</div>
         <span>Map</span>

@@ -5,6 +5,9 @@ import Scanner from './components/Scanner.js';
 import ProductCard from './components/ProductCard.js';
 import StoreMap from './components/StoreMap.js';
 import { getProduct } from './services/api.js';
+import Messaging from './components/Messaging.js';
+import AvatarSelector from './components/AvatarSelector.js';
+import { STORES_DATA } from './services/stores.js';
 import { getUserLocation, getNearbyStores, geocodeCity } from './services/location.js';
 import {
   addToHistory, getHistory, clearHistory, getUserProfile, saveUserProfile,
@@ -319,6 +322,8 @@ function render() {
         <div id="map" style="height: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
       </div>
     `;
+  } else if (currentState === 'messaging') {
+    content = Messaging();
   } else if (currentState === 'profile') {
     const history = getHistory();
     const favorites = getFavoriteStores();
@@ -327,6 +332,14 @@ function render() {
     const friendCode = getFriendCode();
     const friends = getFriends();
     const newsletterPrefs = getNewsletterPreferences();
+
+    // Track avatar changes locally before save
+    let selectedAvatar = profile.avatar;
+    let selectedGender = profile.gender;
+    const onAvatarUpdate = (updates) => {
+      if (updates.avatar) selectedAvatar = updates.avatar;
+      if (updates.gender) selectedGender = updates.gender;
+    };
 
     // Helper function to calculate days until expiry
     const getDaysUntilExpiry = (validUntil) => {
@@ -429,6 +442,7 @@ function render() {
                 <label>Name</label>
                 <input type="text" id="profile-name" class="form-input" value="${profile.name || ''}" placeholder="Enter your name">
             </div>
+            ${AvatarSelector(profile.avatar, profile.gender, onAvatarUpdate)}
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" id="profile-email" class="form-input" value="${profile.email || ''}" placeholder="your@email.com">
@@ -448,7 +462,13 @@ function render() {
         <div class="profile-section">
             <div class="profile-section-title">⭐ Favorite Stores</div>
             ${favoritesHtml}
-            <button class="add-favorite-btn" data-target="home">+ Add Favorite Store</button>
+            <div class="add-favorite-container" style="display: flex; gap: 10px; margin-top: 10px;">
+                <select id="new-favorite-select" class="form-input">
+                    <option value="">Select a store to add...</option>
+                    ${STORES_DATA.map(s => `<option value="${s.name}">${s.name} (${s.category})</option>`).join('')}
+                </select>
+                <button id="add-favorite-confirm" class="btn-secondary" style="width: auto;">Add</button>
+            </div>
         </div>
 
         <!-- Notification Preferences -->
@@ -606,6 +626,23 @@ function render() {
     document.getElementById('street-filter').addEventListener('input', filterDeals);
     document.getElementById('store-filter').addEventListener('change', filterDeals);
   } else if (currentState === 'profile') {
+    // Add Favorite Store (New Logic)
+    document.getElementById('add-favorite-confirm').addEventListener('click', () => {
+      const select = document.getElementById('new-favorite-select');
+      const storeName = select.value;
+      if (!storeName) return alert('Please select a store first.');
+
+      const storeData = STORES_DATA.find(s => s.name === storeName);
+      if (storeData) {
+        if (addFavoriteStore(storeData)) {
+          alert(`${storeName} added to favorites!`);
+          render();
+        } else {
+          alert(`${storeName} is already in your favorites.`);
+        }
+      }
+    });
+
     // Save Profile
     document.getElementById('save-profile').addEventListener('click', async () => {
       const name = document.getElementById('profile-name').value;
@@ -623,7 +660,7 @@ function render() {
         }
       }
 
-      saveUserProfile({ name, email, location });
+      saveUserProfile({ name, email, location, avatar: selectedAvatar, gender: selectedGender });
       alert('Profile saved!');
       render();
     });
